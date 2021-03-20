@@ -44,8 +44,11 @@ def run(init_lr=0.1, max_steps=64e3, mode='rgb', root='../../8_s_clips_jpeg/', t
     # val_dataset = Dataset(train_split, 'testing', root, mode, test_transforms)
     # val_dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=batch_size, shuffle=True, num_workers=36, pin_memory=True)    
 
-    dataloaders = {'train': dataloader, ''' 'val': val_dataloader '''}
-    datasets = {'train': dataset,''' 'val': val_dataset '''}
+    # dataloaders = {'train': dataloader, 'val': val_dataloader}
+    # datasets = {'train': dataset,'val': val_dataset }
+
+    dataloaders = {'train': dataloader}
+    datasets = {'train': dataset}
 
     
     # setup the model
