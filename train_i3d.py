@@ -73,7 +73,7 @@ def run(init_lr=0.1, max_steps=64e3, mode='rgb', root='../../8_s_clips_jpeg/', t
     # train it
     while steps < max_steps:#for epoch in range(num_epochs):
         print('Step {}/{}'.format(steps, max_steps))
-        print '-' * 10
+        print('-' * 10)
 
         # Each epoch has a training and validation phase
         for phase in ['train',''' 'val' ''']:
