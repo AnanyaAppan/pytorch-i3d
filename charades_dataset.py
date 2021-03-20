@@ -28,7 +28,7 @@ def video_to_tensor(pic):
 def load_rgb_frames(image_dir, vid, start, num):
   frames = []
   for i in range(start, start+num):
-    img = cv2.imread(os.path.join(image_dir, vid, vid+'-'+str(i).zfill(6)+'.jpg'))[:, :, [2, 1, 0]]
+    img = cv2.imread(os.path.join(image_dir, vid, vid+'-'+str(i).zfill(5)+'.jpg'))[:, :, [2, 1, 0]]
     w,h,c = img.shape
     if w < 226 or h < 226:
         d = 226.-min(w,h)
@@ -41,8 +41,8 @@ def load_rgb_frames(image_dir, vid, start, num):
 def load_flow_frames(image_dir, vid, start, num):
   frames = []
   for i in range(start, start+num):
-    imgx = cv2.imread(os.path.join(image_dir, vid, vid+'-'+str(i).zfill(6)+'x.jpg'), cv2.IMREAD_GRAYSCALE)
-    imgy = cv2.imread(os.path.join(image_dir, vid, vid+'-'+str(i).zfill(6)+'y.jpg'), cv2.IMREAD_GRAYSCALE)
+    imgx = cv2.imread(os.path.join(image_dir, vid, vid+'-'+str(i).zfill(5)+'x.jpg'), cv2.IMREAD_GRAYSCALE)
+    imgy = cv2.imread(os.path.join(image_dir, vid, vid+'-'+str(i).zfill(5)+'y.jpg'), cv2.IMREAD_GRAYSCALE)
     
     w,h = imgx.shape
     if w < 224 or h < 224:
@@ -58,7 +58,7 @@ def load_flow_frames(image_dir, vid, start, num):
   return np.asarray(frames, dtype=np.float32)
 
 
-def make_dataset(split_file, split, root, mode, num_classes=157):
+def make_dataset(split_file, split, root, mode, num_classes=8):
     dataset = []
     with open(split_file, 'r') as f:
         data = json.load(f)
@@ -74,7 +74,7 @@ def make_dataset(split_file, split, root, mode, num_classes=157):
         if mode == 'flow':
             num_frames = num_frames//2
             
-        if num_frames < 66:
+        if num_frames < 34:
             continue
 
         label = np.zeros((num_classes,num_frames), np.float32)
@@ -109,12 +109,12 @@ class Charades(data_utl.Dataset):
             tuple: (image, target) where target is class_index of the target class.
         """
         vid, label, dur, nf = self.data[index]
-        start_f = random.randint(1,nf-65)
+        start_f = random.randint(1,nf-33)
 
         if self.mode == 'rgb':
-            imgs = load_rgb_frames(self.root, vid, start_f, 64)
+            imgs = load_rgb_frames(self.root, vid, start_f, 32)
         else:
-            imgs = load_flow_frames(self.root, vid, start_f, 64)
+            imgs = load_flow_frames(self.root, vid, start_f, 32)
         label = label[:, start_f:start_f+64]
 
         imgs = self.transforms(imgs)
