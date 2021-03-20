@@ -76,7 +76,7 @@ def run(init_lr=0.1, max_steps=64e3, mode='rgb', root='../../8_s_clips_jpeg/', t
         print('-' * 10)
 
         # Each epoch has a training and validation phase
-        for phase in ['train',''' 'val' ''']:
+        for phase in ['train']:
             if phase == 'train':
                 i3d.train(True)
             else:
