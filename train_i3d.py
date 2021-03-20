@@ -72,7 +72,7 @@ def run(init_lr=0.1, max_steps=64e3, mode='rgb', root='../../8_s_clips_jpeg/', t
     steps = 0
     # train it
     while steps < max_steps:#for epoch in range(num_epochs):
-        print 'Step {}/{}'.format(steps, max_steps)
+        print('Step {}/{}'.format(steps, max_steps))
         print '-' * 10
 
         # Each epoch has a training and validation phase
@@ -122,7 +122,7 @@ def run(init_lr=0.1, max_steps=64e3, mode='rgb', root='../../8_s_clips_jpeg/', t
                     optimizer.zero_grad()
                     lr_sched.step()
                     if steps % 10 == 0:
-                        print '{} Loc Loss: {:.4f} Cls Loss: {:.4f} Tot Loss: {:.4f}'.format(phase, tot_loc_loss/(10*num_steps_per_update), tot_cls_loss/(10*num_steps_per_update), tot_loss/10)
+                        print('{} Loc Loss: {:.4f} Cls Loss: {:.4f} Tot Loss: {:.4f}'.format(phase, tot_loc_loss/(10*num_steps_per_update), tot_cls_loss/(10*num_steps_per_update), tot_loss/10))
                         # save model
                         torch.save(i3d.module.state_dict(), save_model+str(steps).zfill(6)+'.pt')
                         tot_loss = tot_loc_loss = tot_cls_loss = 0.
