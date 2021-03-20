@@ -133,4 +133,5 @@ def run(init_lr=0.1, max_steps=64e3, mode='rgb', root='../../8_s_clips_jpeg/', t
 
 if __name__ == '__main__':
     # need to add argparse
-    run(mode=args.mode, root=args.root, save_model=args.save_model)
+    # run(mode=args.mode, root=args.root, save_model=args.save_model)
+    run()
