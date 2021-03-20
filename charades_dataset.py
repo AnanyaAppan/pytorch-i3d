@@ -118,7 +118,7 @@ class Charades(data_utl.Dataset):
         label = label[:, start_f:start_f+32]
 
         imgs = self.transforms(imgs)
-        print(imgs.shape)
+        # print(imgs.shape)
 
         return video_to_tensor(imgs), torch.from_numpy(label)
 
