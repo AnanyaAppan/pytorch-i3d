@@ -74,7 +74,7 @@ def run(init_lr=0.1, max_steps=64e3, mode='rgb', root='../../8_s_clips_jpeg/', t
     while steps < max_steps:#for epoch in range(num_epochs):
         print('Step {}/{}'.format(steps, max_steps))
         print('-' * 10)
-
+        accuracy = 0
         # Each epoch has a training and validation phase
         for phase in ['train']:
             if phase == 'train':
@@ -109,8 +109,10 @@ def run(init_lr=0.1, max_steps=64e3, mode='rgb', root='../../8_s_clips_jpeg/', t
 
                 # compute classification loss (with max-pooling along time B x C x T)
                 cls_loss = F.binary_cross_entropy_with_logits(torch.max(per_frame_logits, dim=2)[0], torch.max(labels, dim=2)[0])
-                print(torch.max(per_frame_logits, dim=2)[0])
-                print(torch.max(labels, dim=2)[0])
+                # print(torch.max(per_frame_logits, dim=2)[0])
+                # print(torch.max(labels, dim=2)[0])
+                correct = torch.max(per_frame_logits, dim=2)[0].argmax(1).eq(torch.max(labels, dim=2)[0].argmax(1))
+                accuracy += correct.float().sum().item() / batch_size
                 tot_cls_loss += cls_loss.data.item()
 
                 loss = (0.5*loc_loss + 0.5*cls_loss)/num_steps_per_update
@@ -124,7 +126,7 @@ def run(init_lr=0.1, max_steps=64e3, mode='rgb', root='../../8_s_clips_jpeg/', t
                     optimizer.zero_grad()
                     lr_sched.step()
                     if steps % 10 == 0:
-                        print('{} Loc Loss: {:.4f} Cls Loss: {:.4f} Tot Loss: {:.4f}'.format(phase, tot_loc_loss/(10*num_steps_per_update), tot_cls_loss/(10*num_steps_per_update), tot_loss/10))
+                        print('{} Loc Loss: {:.4f} Cls Loss: {:.4f} Tot Loss: {:.4f} Accuracy: {:.4f}'.format(phase, tot_loc_loss/(10*num_steps_per_update), tot_cls_loss/(10*num_steps_per_update), tot_loss/10, accuracy))
                         # save model
                         torch.save(i3d.module.state_dict(), save_model+str(steps).zfill(6)+'.pt')
                         tot_loss = tot_loc_loss = tot_cls_loss = 0.
