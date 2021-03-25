@@ -41,11 +41,11 @@ def run(init_lr=0.1, max_steps=64e3, mode='rgb', root='../../8_s_clips_jpeg/', t
     dataset = Dataset(train_split, 'training', root, mode, train_transforms)
     dataloader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers=4, pin_memory=True)
 
-    # val_dataset = Dataset(train_split, 'testing', root, mode, test_transforms)
-    # val_dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=batch_size, shuffle=True, num_workers=36, pin_memory=True)    
+    val_dataset = Dataset(train_split, 'testing', root, mode, test_transforms)
+    val_dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=batch_size, shuffle=True, num_workers=4, pin_memory=True)    
 
-    # dataloaders = {'train': dataloader, 'val': val_dataloader}
-    # datasets = {'train': dataset,'val': val_dataset }
+    dataloaders = {'train': dataloader, 'val': val_dataloader}
+    datasets = {'train': dataset,'val': val_dataset }
 
     dataloaders = {'train': dataloader}
     datasets = {'train': dataset}
@@ -75,7 +75,7 @@ def run(init_lr=0.1, max_steps=64e3, mode='rgb', root='../../8_s_clips_jpeg/', t
         print('Step {}/{}'.format(steps, max_steps))
         print('-' * 10)
         # Each epoch has a training and validation phase
-        for phase in ['train']:
+        for phase in ['train','val']:
             if phase == 'train':
                 i3d.train(True)
             else:
@@ -136,7 +136,7 @@ def run(init_lr=0.1, max_steps=64e3, mode='rgb', root='../../8_s_clips_jpeg/', t
                         total = 0
                         n = 0
             if phase == 'val':
-                print('{} Loc Loss: {:.4f} Cls Loss: {:.4f} Tot Loss: {:.4f}'.format(phase, tot_loc_loss/num_iter, tot_cls_loss/num_iter, (tot_loss*num_steps_per_update)/num_iter))
+                print('{} Loc Loss: {:.4f} Cls Loss: {:.4f} Tot Loss: {:.4f} Accuracy: {:.4f}'.format(phase, tot_loc_loss/num_iter, tot_cls_loss/num_iter, (tot_loss*num_steps_per_update)/num_iter, total/n))
     
 
 
