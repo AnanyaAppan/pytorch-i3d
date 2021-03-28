@@ -31,7 +31,7 @@ from pytorch_i3d import InceptionI3d
 from charades_dataset import Charades as Dataset
 
 
-def run(init_lr=0.1, max_steps=64e3, mode='rgb', root='../../8_s_clips_jpeg/', train_split='../../8_s_clips_jpeg/Annotations/annotations_charades.json', batch_size=4, save_model=''):
+def run(init_lr=0.1, max_steps=64e3, mode='rgb', root='../../SSBD/ssbd_clip_segment/data/', train_split='../../SSBD/Annotations/annotations_charades.json', batch_size=4, save_model=''):
     # setup dataset
     train_transforms = transforms.Compose([videotransforms.RandomCrop(224),
                                            videotransforms.RandomHorizontalFlip(),
