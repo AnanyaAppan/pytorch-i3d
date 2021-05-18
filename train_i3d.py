@@ -101,8 +101,6 @@ def run(init_lr=0.1, max_steps=64e3, mode='rgb', root='../../SSBD/ssbd_clip_segm
                 labels = Variable(labels.cuda())
 
                 per_frame_logits = i3d(inputs)
-                print(per_frame_logits.shape)
-                print(labels.shape)
                 # upsample to input size
                 per_frame_logits = F.upsample(per_frame_logits, t, mode='linear')
 
@@ -112,8 +110,8 @@ def run(init_lr=0.1, max_steps=64e3, mode='rgb', root='../../SSBD/ssbd_clip_segm
 
                 # compute classification loss (with max-pooling along time B x C x T)
                 cls_loss = F.binary_cross_entropy_with_logits(torch.max(per_frame_logits, dim=2)[0], torch.max(labels, dim=2)[0])
-                # print(torch.max(per_frame_logits, dim=2)[0])
-                # print(torch.max(labels, dim=2)[0])
+                print(torch.max(per_frame_logits, dim=2)[0])
+                print(torch.max(labels, dim=2)[0])
                 correct = torch.max(per_frame_logits, dim=2)[0].argmax(1).eq(torch.max(labels, dim=2)[0].argmax(1))
                 total += correct.float().sum().item() 
                 n += batch_size
