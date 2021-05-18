@@ -119,7 +119,7 @@ def run(init_lr=0.1, max_steps=64e3, mode='rgb', root='../../SSBD/ssbd_clip_segm
 
                 loss = (0.5*loc_loss + 0.5*cls_loss)/num_steps_per_update
                 tot_loss += loss.data.item()
-                loss.backward()
+                # loss.backward()
 
                 if num_iter == num_steps_per_update and phase == 'train':
                     steps += 1
